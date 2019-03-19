@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.ggs.dao.NewsDAO">
+
+  <sql id="insert_columns">
+    (title, full_title, intro, author, copy_from, hit_num, post_num, like_num, html_path, thump_path, status, create_time, update_time)
+  </sql>
+
+  <sql id="insert_values">
+    (#{title}, #{fullTitle}, #{intro}, #{author}, #{copyFrom}, #{hitNum}, #{postNum}, #{likeNum}, #{htmlPath}, #{thumpPath}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+  <sql id="query_columns">
+    id, title, full_title AS fullTitle, intro, author, copy_from AS copyFrom, hit_num AS hitNum, post_num AS postNum, like_num AS likeNum, html_path AS htmlPath, thump_path AS thumpPath, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+  <sql id="where">
+    <where>
+      
+    </where>
+  </sql>
+
+  <sql id="limit_where">
+    <include refid="where"/>
+    <if test="range != 0">
+      LIMIT ${start}, ${range}
+    </if>
+  </sql>
+
+  <insert id="insert" parameterType="com.mhdss.ggs.dataobject.NewsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO news <include refid="insert_columns"/> VALUES <include refid="insert_values"/>
+  </insert>
+
+  <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.ggs.dataobject.NewsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO news <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+  </update>
+
+  <update id="updateById" parameterType="com.mhdss.ggs.dataobject.NewsDO">
+    UPDATE news
+    <set>
+      <if test="title != null">
+        title = #{title},
+      </if>
+      <if test="fullTitle != null">
+        full_title = #{fullTitle},
+      </if>
+      <if test="intro != null">
+        intro = #{intro},
+      </if>
+      <if test="author != null">
+        author = #{author},
+      </if>
+      <if test="copyFrom != null">
+        copy_from = #{copyFrom},
+      </if>
+      <if test="hitNum != null">
+        hit_num = #{hitNum},
+      </if>
+      <if test="postNum != null">
+        post_num = #{postNum},
+      </if>
+      <if test="likeNum != null">
+        like_num = #{likeNum},
+      </if>
+      <if test="htmlPath != null">
+        html_path = #{htmlPath},
+      </if>
+      <if test="thumpPath != null">
+        thump_path = #{thumpPath},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateByIds" parameterType="java.util.Map">
+    UPDATE news
+    <set>
+      <if test="target.title != null">
+        title = #{target.title},
+      </if>
+      <if test="target.fullTitle != null">
+        full_title = #{target.fullTitle},
+      </if>
+      <if test="target.intro != null">
+        intro = #{target.intro},
+      </if>
+      <if test="target.author != null">
+        author = #{target.author},
+      </if>
+      <if test="target.copyFrom != null">
+        copy_from = #{target.copyFrom},
+      </if>
+      <if test="target.hitNum != null">
+        hit_num = #{target.hitNum},
+      </if>
+      <if test="target.postNum != null">
+        post_num = #{target.postNum},
+      </if>
+      <if test="target.likeNum != null">
+        like_num = #{target.likeNum},
+      </if>
+      <if test="target.htmlPath != null">
+        html_path = #{target.htmlPath},
+      </if>
+      <if test="target.thumpPath != null">
+        thump_path = #{target.thumpPath},
+      </if>
+      <if test="target.status != null">
+        status = #{target.status},
+      </if>
+      <if test="target.createTime != null">
+        create_time = #{target.createTime},
+      </if>
+      <if test="target.updateTime != null">
+        update_time = #{target.updateTime},
+      </if>
+    </set>
+    WHERE id IN
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM news WHERE id = #{id}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="java.util.Collection">
+    DELETE FROM news WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="selectById" parameterType="long" resultType="com.mhdss.ggs.dataobject.NewsDO">
+    SELECT <include refid="query_columns"/> FROM news WHERE id = #{id}
+  </select>
+
+  <select id="selectIdsByQuery" parameterType="com.mhdss.ggs.query.NewsQuery" resultType="long">
+    SELECT id FROM news <include refid="limit_where"/>
+  </select>
+
+  <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.ggs.dataobject.NewsDO">
+    SELECT <include refid="query_columns"/> FROM news WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectCount" parameterType="com.mhdss.ggs.query.NewsQuery" resultType="int">
+    SELECT COUNT(*) FROM news <include refid="where"/>
+  </select>
+
+  <select id="selectList" parameterType="com.mhdss.ggs.query.NewsQuery" resultType="com.mhdss.ggs.dataobject.NewsDO">
+    SELECT <include refid="query_columns"/> FROM news <include refid="limit_where"/>
+  </select>
+</mapper>
