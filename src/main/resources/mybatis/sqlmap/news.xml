@@ -3,15 +3,15 @@
 <mapper namespace="com.mhdss.ggs.dao.NewsDAO">
 
   <sql id="insert_columns">
-    (title, full_title, intro, author, copy_from, hit_num, post_num, like_num, html_path, thump_path, status, create_time, update_time)
+    (title, description, author, copy_from, hit_num, post_num, like_num, html_path, thump_path, timestamp, status, create_time, update_time)
   </sql>
 
   <sql id="insert_values">
-    (#{title}, #{fullTitle}, #{intro}, #{author}, #{copyFrom}, #{hitNum}, #{postNum}, #{likeNum}, #{htmlPath}, #{thumpPath}, #{status}, #{createTime}, #{updateTime})
+    (#{title}, #{description}, #{author}, #{copyFrom}, #{hitNum}, #{postNum}, #{likeNum}, #{htmlPath}, #{thumpPath}, #{timestamp}, #{status}, #{createTime}, #{updateTime})
   </sql>
 
   <sql id="query_columns">
-    id, title, full_title AS fullTitle, intro, author, copy_from AS copyFrom, hit_num AS hitNum, post_num AS postNum, like_num AS likeNum, html_path AS htmlPath, thump_path AS thumpPath, status, create_time AS createTime, update_time AS updateTime
+    id, title, description, author, copy_from AS copyFrom, hit_num AS hitNum, post_num AS postNum, like_num AS likeNum, html_path AS htmlPath, thump_path AS thumpPath, timestamp, status, create_time AS createTime, update_time AS updateTime
   </sql>
 
   <sql id="where">
@@ -47,11 +47,8 @@
       <if test="title != null">
         title = #{title},
       </if>
-      <if test="fullTitle != null">
-        full_title = #{fullTitle},
-      </if>
-      <if test="intro != null">
-        intro = #{intro},
+      <if test="description != null">
+        description = #{description},
       </if>
       <if test="author != null">
         author = #{author},
@@ -74,6 +71,9 @@
       <if test="thumpPath != null">
         thump_path = #{thumpPath},
       </if>
+      <if test="timestamp != null">
+        timestamp = #{timestamp},
+      </if>
       <if test="status != null">
         status = #{status},
       </if>
@@ -93,11 +93,8 @@
       <if test="target.title != null">
         title = #{target.title},
       </if>
-      <if test="target.fullTitle != null">
-        full_title = #{target.fullTitle},
-      </if>
-      <if test="target.intro != null">
-        intro = #{target.intro},
+      <if test="target.description != null">
+        description = #{target.description},
       </if>
       <if test="target.author != null">
         author = #{target.author},
@@ -119,6 +116,9 @@
       </if>
       <if test="target.thumpPath != null">
         thump_path = #{target.thumpPath},
+      </if>
+      <if test="target.timestamp != null">
+        timestamp = #{target.timestamp},
       </if>
       <if test="target.status != null">
         status = #{target.status},

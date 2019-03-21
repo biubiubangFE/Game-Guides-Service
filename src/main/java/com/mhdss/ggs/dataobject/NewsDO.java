@@ -3,9 +3,7 @@ package com.mhdss.ggs.dataobject;
 public class NewsDO extends BaseDO {
     private String title;
 
-    private String fullTitle;
-
-    private String intro;
+    private String description;
 
     private String author;
 
@@ -21,6 +19,8 @@ public class NewsDO extends BaseDO {
 
     private String thumpPath;
 
+    private Long timestamp;
+
     public String getTitle() {
         return title;
     }
@@ -29,20 +29,12 @@ public class NewsDO extends BaseDO {
         this.title = title;
     }
 
-    public String getFullTitle() {
-        return fullTitle;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFullTitle(String fullTitle) {
-        this.fullTitle = fullTitle;
-    }
-
-    public String getIntro() {
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAuthor() {
@@ -99,5 +91,13 @@ public class NewsDO extends BaseDO {
 
     public void setThumpPath(String thumpPath) {
         this.thumpPath = thumpPath;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }
