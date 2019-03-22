@@ -1,8 +1,10 @@
-package com.mhdss.ggs.dataobject;
+package com.mhdss.ggs.dto;
 
-public class ResourceDO extends BaseDO {
-    private String title;
+import com.mhdss.ggs.constant.SpiderAddressType;
 
+public class SpiderResultDTO {
+
+    //页面跳转目录
     private String shareUrl;
 
     private String description;
@@ -11,21 +13,13 @@ public class ResourceDO extends BaseDO {
 
     private Long timestamp;
 
+    private String title;
+
     private String img;
 
     private String author;
 
-    private Byte parseStatus;
-
-    private Byte fromType;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private SpiderAddressType spiderType;
 
     public String getShareUrl() {
         return shareUrl;
@@ -59,6 +53,15 @@ public class ResourceDO extends BaseDO {
         this.timestamp = timestamp;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
     public String getImg() {
         return img;
     }
@@ -75,19 +78,11 @@ public class ResourceDO extends BaseDO {
         this.author = author;
     }
 
-    public Byte getParseStatus() {
-        return parseStatus;
+    public SpiderAddressType getSpiderType() {
+        return spiderType;
     }
 
-    public void setParseStatus(Byte parseStatus) {
-        this.parseStatus = parseStatus;
-    }
-
-    public Byte getFromType() {
-        return fromType;
-    }
-
-    public void setFromType(Byte fromType) {
-        this.fromType = fromType;
+    public void setSpiderType(SpiderAddressType spiderType) {
+        this.spiderType = spiderType;
     }
 }

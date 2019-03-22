@@ -2,6 +2,7 @@ package com.mhdss.ggs.dto;
 
 import java.util.List;
 
+
 public class XiaoHeiHeResultDTO {
 
     //页面跳转目录
@@ -11,7 +12,7 @@ public class XiaoHeiHeResultDTO {
 
     private String tag;
 
-    private String timestamp;
+    private Long timestamp;
 
     private String title;
 
@@ -46,11 +47,11 @@ public class XiaoHeiHeResultDTO {
         this.tag = tag;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 

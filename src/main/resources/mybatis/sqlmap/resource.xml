@@ -3,15 +3,15 @@
 <mapper namespace="com.mhdss.ggs.dao.ResourceDAO">
 
   <sql id="insert_columns">
-    (title, share_url, description, tag, timestamp, imgs, author, parse_status, status, create_time, update_time)
+    (title, share_url, description, tag, timestamp, img, author, parse_status, from_type, status, create_time, update_time)
   </sql>
 
   <sql id="insert_values">
-    (#{title}, #{shareUrl}, #{description}, #{tag}, #{timestamp}, #{imgs}, #{author}, #{parseStatus}, #{status}, #{createTime}, #{updateTime})
+    (#{title}, #{shareUrl}, #{description}, #{tag}, #{timestamp}, #{img}, #{author}, #{parseStatus}, #{fromType}, #{status}, #{createTime}, #{updateTime})
   </sql>
 
   <sql id="query_columns">
-    id, title, share_url AS shareUrl, description, tag, timestamp, imgs, author, parse_status AS parseStatus, status, create_time AS createTime, update_time AS updateTime
+    id, title, share_url AS shareUrl, description, tag, timestamp, img, author, parse_status AS parseStatus, from_type AS fromType, status, create_time AS createTime, update_time AS updateTime
   </sql>
 
   <sql id="where">
@@ -59,14 +59,17 @@
       <if test="timestamp != null">
         timestamp = #{timestamp},
       </if>
-      <if test="imgs != null">
-        imgs = #{imgs},
+      <if test="img != null">
+        img = #{img},
       </if>
       <if test="author != null">
         author = #{author},
       </if>
       <if test="parseStatus != null">
         parse_status = #{parseStatus},
+      </if>
+      <if test="fromType != null">
+        from_type = #{fromType},
       </if>
       <if test="status != null">
         status = #{status},
@@ -99,14 +102,17 @@
       <if test="target.timestamp != null">
         timestamp = #{target.timestamp},
       </if>
-      <if test="target.imgs != null">
-        imgs = #{target.imgs},
+      <if test="target.img != null">
+        img = #{target.img},
       </if>
       <if test="target.author != null">
         author = #{target.author},
       </if>
       <if test="target.parseStatus != null">
         parse_status = #{target.parseStatus},
+      </if>
+      <if test="target.fromType != null">
+        from_type = #{target.fromType},
       </if>
       <if test="target.status != null">
         status = #{target.status},
