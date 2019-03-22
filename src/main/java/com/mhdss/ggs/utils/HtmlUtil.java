@@ -29,7 +29,7 @@ public class HtmlUtil {
 
         HtmlPage page = null;
         try {
-            page = webClient.getPage("http://dota2.uuu9.com/201901/586576.shtml");//尝试加载上面图片例子给出的网页
+            page = webClient.getPage("https://api.xiaoheihe.cn//maxnews//app//share//detail//1083866");//尝试加载上面图片例子给出的网页
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -41,39 +41,51 @@ public class HtmlUtil {
         String pageXml = page.asXml();//直接将加载完成的页面转换成xml格式的字符串
 
         Document document = Jsoup.parse(pageXml);//获取html文档
-        Elements contents = document.getElementsByClass("content");
 
-        StringBuffer stringBuffer = new StringBuffer();
-        for (Element element : contents) {
-            stringBuffer.append("\n");
-            stringBuffer.append(element.getElementsByTag("div"));
+
+        StringBuffer head = new StringBuffer();
+        Elements heads = document.getElementsByTag("head");
+
+        for (Element element : heads) {
+            head.append(element);
         }
 
-        Elements details = document.getElementsByClass("detail");
-        String titile = "";
-        for (Element element : details) {
-            titile = element.getElementsByTag("h2").text();
+        StringBuffer body = new StringBuffer();
+
+        Elements bodys = document.getElementsByTag("body");
+
+        body.append("<body style>");
+
+        for (Element element : bodys) {
+
+            Elements styles = element.getElementsByTag("link");
+
+            for (Element style : styles) {
+                body.append(style);
+            }
+
+            Elements containers = element.getElementsByClass("news-container");
+
+            for (Element container : containers) {
+
+                Elements openApp = container.getElementsByClass("btn-open-app primary-grd");
+
+                Elements readAll = container.getElementsByClass("read-all");
+                String openAppBtn = openApp.toString();
+                body.append(container.toString().replace(openAppBtn, "").replace(readAll.toString(), ""));
+            }
+
+
         }
+        body.append("</body>");
 
+        String htmlBody = body.toString().replace("class=\"lazy\"", "").replace("data-original", "src").replace("href=\"/static", "href=\"https://api.xiaoheihe.cn/static");
 
-        Elements styles = document.getElementsByTag("style");
-        String css = "";
-        for (Element element : styles) {
-            css = element.toString();
-        }
-//        Elements textdetails = document.getElementsByClass("textdetail");
-//
-//        StringBuffer stringBuffer2 = new StringBuffer();
-//        for (Element element : textdetails) {
-//            stringBuffer2.append("\n");
-//            stringBuffer2.append(element.getElementsByTag("p"));
-//        }
-
-        saveArticle(titile, stringBuffer.toString(), css, "aa.html");
+        saveArticle(head.toString().replace("href=\"/static", "href=\"https://api.xiaoheihe.cn/static"), htmlBody, "bb.html");
 
     }
 
-    public static void saveArticle(String titile, String content, String css, String blogName) {
+    public static void saveArticle(String header, String content, String blogName) {
 
         String lujing = "E:\\test\\" + blogName;//保存到本地的路径和文件名
 
@@ -91,27 +103,10 @@ public class HtmlUtil {
             FileWriter fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("<html>\n" +
-                    "\n" +
-                    "<head>" +
-                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> ");
-            stringBuffer.append("<title>\n");
 
-            stringBuffer.append(titile);
-
-            stringBuffer.append("</title>\n");
-            stringBuffer.append(css);
-
-            stringBuffer.append("</head>\n" +
-                    "\n" +
-                    "<body>" +
-                    "\n");
-
+            stringBuffer.append(header);
             stringBuffer.append(content);
 
-            stringBuffer.append("</body>\n" +
-                    "\n" +
-                    "</html>");
             bw.write(stringBuffer.toString());
 
             bw.flush();
