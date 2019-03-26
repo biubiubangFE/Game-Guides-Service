@@ -1,6 +1,8 @@
 package com.mhdss.ggs.dataobject;
 
 public class NewsDO extends BaseDO {
+    private Long resourceId;
+
     private String title;
 
     private String description;
@@ -15,11 +17,23 @@ public class NewsDO extends BaseDO {
 
     private Integer likeNum;
 
+    private Byte showType;
+
+    private String content;
+
     private String htmlPath;
 
     private String thumpPath;
 
     private Long timestamp;
+
+    public Long getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
 
     public String getTitle() {
         return title;
@@ -75,6 +89,22 @@ public class NewsDO extends BaseDO {
 
     public void setLikeNum(Integer likeNum) {
         this.likeNum = likeNum;
+    }
+
+    public Byte getShowType() {
+        return showType;
+    }
+
+    public void setShowType(Byte showType) {
+        this.showType = showType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getHtmlPath() {

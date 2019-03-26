@@ -34,7 +34,7 @@ public class ScannerResourceTask implements InitializingBean {
         //初始化启动任务，扫描接口，获取资源列表
         ScannerSource scannerSource = new ScannerSource();
 
-        scheduledExecutorService.scheduleWithFixedDelay(scannerSource, 10, 60, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(scannerSource, 1, 60, TimeUnit.SECONDS);
 
     }
 
@@ -50,7 +50,7 @@ public class ScannerResourceTask implements InitializingBean {
             //3.分类解析，入库
 
             for (SpiderResultDTO spiderResultDTO : spiderResultDTOS) {
-
+                logger.debug("插入 resource url =  {}", spiderResultDTO.getShareUrl());
                 resourceService.addResource(spiderResultDTO);
 
             }

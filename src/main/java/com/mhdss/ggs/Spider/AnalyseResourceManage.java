@@ -19,7 +19,7 @@ public class AnalyseResourceManage {
         SpiderAddressType addressType = SpiderAddressType.getType(fromType);
 
         if (addressType == SpiderAddressType.XIAOHEIHEZIZOUQI) {
-            XiaoHeiHeAnalysis xiaoHeiHeAnalysis = new XiaoHeiHeAnalysis(resourceService, newsService);
+            XiaoHeiHeAnalysis xiaoHeiHeAnalysis = new XiaoHeiHeAnalysis();
         }
 
     }

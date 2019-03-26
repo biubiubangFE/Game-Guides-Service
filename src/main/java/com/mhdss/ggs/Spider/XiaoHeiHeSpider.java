@@ -45,9 +45,9 @@ public class XiaoHeiHeSpider {
 
         if (null == responseData || !responseData.getStatus().equals("ok")) {
             logger.error("拉取小黑河接口异常response:{}", responseData);
+            return null;
         }
-        return null;
-
+        return result2Spider(responseData.getResult());
 
     }
 
@@ -64,7 +64,8 @@ public class XiaoHeiHeSpider {
 
         for (XiaoHeiHeResultDTO dto : resultDTOS) {
             byte contentType = dto.getContent_type();
-            if (contentType == 2) {
+            Long timestamp = dto.getTimestamp();
+            if (contentType == 2 && null != timestamp) {
 
                 SpiderResultDTO spider = new SpiderResultDTO();
                 spider.setAuthor(dto.getAuthor());

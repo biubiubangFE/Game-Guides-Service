@@ -3,15 +3,15 @@
 <mapper namespace="com.mhdss.ggs.dao.NewsDAO">
 
   <sql id="insert_columns">
-    (title, description, author, copy_from, hit_num, post_num, like_num, html_path, thump_path, timestamp, status, create_time, update_time)
+    (resource_id, title, description, author, copy_from, hit_num, post_num, like_num, show_type, content, html_path, thump_path, timestamp, status, create_time, update_time)
   </sql>
 
   <sql id="insert_values">
-    (#{title}, #{description}, #{author}, #{copyFrom}, #{hitNum}, #{postNum}, #{likeNum}, #{htmlPath}, #{thumpPath}, #{timestamp}, #{status}, #{createTime}, #{updateTime})
+    (#{resourceId}, #{title}, #{description}, #{author}, #{copyFrom}, #{hitNum}, #{postNum}, #{likeNum}, #{showType}, #{content}, #{htmlPath}, #{thumpPath}, #{timestamp}, #{status}, #{createTime}, #{updateTime})
   </sql>
 
   <sql id="query_columns">
-    id, title, description, author, copy_from AS copyFrom, hit_num AS hitNum, post_num AS postNum, like_num AS likeNum, html_path AS htmlPath, thump_path AS thumpPath, timestamp, status, create_time AS createTime, update_time AS updateTime
+    id, resource_id AS resourceId, title, description, author, copy_from AS copyFrom, hit_num AS hitNum, post_num AS postNum, like_num AS likeNum, show_type AS showType, content, html_path AS htmlPath, thump_path AS thumpPath, timestamp, status, create_time AS createTime, update_time AS updateTime
   </sql>
 
   <sql id="where">
@@ -44,6 +44,9 @@
   <update id="updateById" parameterType="com.mhdss.ggs.dataobject.NewsDO">
     UPDATE news
     <set>
+      <if test="resourceId != null">
+        resource_id = #{resourceId},
+      </if>
       <if test="title != null">
         title = #{title},
       </if>
@@ -64,6 +67,12 @@
       </if>
       <if test="likeNum != null">
         like_num = #{likeNum},
+      </if>
+      <if test="showType != null">
+        show_type = #{showType},
+      </if>
+      <if test="content != null">
+        content = #{content},
       </if>
       <if test="htmlPath != null">
         html_path = #{htmlPath},
@@ -90,6 +99,9 @@
   <update id="updateByIds" parameterType="java.util.Map">
     UPDATE news
     <set>
+      <if test="target.resourceId != null">
+        resource_id = #{target.resourceId},
+      </if>
       <if test="target.title != null">
         title = #{target.title},
       </if>
@@ -110,6 +122,12 @@
       </if>
       <if test="target.likeNum != null">
         like_num = #{target.likeNum},
+      </if>
+      <if test="target.showType != null">
+        show_type = #{target.showType},
+      </if>
+      <if test="target.content != null">
+        content = #{target.content},
       </if>
       <if test="target.htmlPath != null">
         html_path = #{target.htmlPath},

@@ -48,4 +48,13 @@ public class ResourceServiceImpl implements ResourceService {
 
         return resourceDAO.selectList(resourceQuery);
     }
+
+    @Override
+    public void updateParseStatus(Long resourceId, ParseStatus parseStatus) {
+        ResourceDO resourceDO = new ResourceDO();
+        resourceDO.setId(resourceId);
+        resourceDO.setParseStatus(parseStatus.getStatus());
+        resourceDO.setUpdateTime(DateUtil.getCurrentTimeStamp());
+        resourceDAO.updateById(resourceDO);
+    }
 }

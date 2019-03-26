@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -42,47 +43,24 @@ public class HtmlUtil {
 
         Document document = Jsoup.parse(pageXml);//获取html文档
 
+        Elements articleContent = document.getElementsByClass("article-content");
 
-        StringBuffer head = new StringBuffer();
-        Elements heads = document.getElementsByTag("head");
-
-        for (Element element : heads) {
-            head.append(element);
-        }
-
-        StringBuffer body = new StringBuffer();
-
-        Elements bodys = document.getElementsByTag("body");
-
-        body.append("<body style>");
-
-        for (Element element : bodys) {
-
-            Elements styles = element.getElementsByTag("link");
-
-            for (Element style : styles) {
-                body.append(style);
-            }
-
-            Elements containers = element.getElementsByClass("news-container");
-
-            for (Element container : containers) {
-
-                Elements openApp = container.getElementsByClass("btn-open-app primary-grd");
-
-                Elements readAll = container.getElementsByClass("read-all");
-                String openAppBtn = openApp.toString();
-                body.append(container.toString().replace(openAppBtn, "").replace(readAll.toString(), ""));
-            }
-
-
-        }
-        body.append("</body>");
-
-        String htmlBody = body.toString().replace("class=\"lazy\"", "").replace("data-original", "src").replace("href=\"/static", "href=\"https://api.xiaoheihe.cn/static");
-
-        saveArticle(head.toString().replace("href=\"/static", "href=\"https://api.xiaoheihe.cn/static"), htmlBody, "bb.html");
-
+//        StringBuffer content = new StringBuffer();
+//        for (Element article : articleContent) {
+//            Elements allElements = article.getAllElements();
+//
+//            for (Element element : allElements) {
+//                String className = element.className();
+//                String elementContent = element.toString();
+//
+//                if (StringUtils.isNoneBlank(className) && ("news-source".equals(className) || "article-content".equals(className))) {
+//                    continue;
+//                }
+//                content.append(elementContent);
+//            }
+//        }
+//
+//        saveArticle("", content.toString().replace("data-original", "src").replaceAll("onclick=\"*\"",""), "bb.txt");
     }
 
     public static void saveArticle(String header, String content, String blogName) {

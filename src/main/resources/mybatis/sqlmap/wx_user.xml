@@ -16,7 +16,7 @@
 
   <sql id="where">
     <where>
-      
+
     </where>
   </sql>
 
@@ -38,7 +38,7 @@
     <selectKey keyProperty="id" resultType="long">
       SELECT LAST_INSERT_ID() AS id
     </selectKey>
-    INSERT INTO wx_user <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+    INSERT INTO wx_user <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime},nick_name = #{nickName}, avatar_url = #{avatarUrl}, gender =#{gender}, session_key =#{sessionKey}, id = LAST_INSERT_ID(id)
   </update>
 
   <update id="updateById" parameterType="com.mhdss.ggs.dataobject.WxUserDO">
