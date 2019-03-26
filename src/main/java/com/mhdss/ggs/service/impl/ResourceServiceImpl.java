@@ -30,7 +30,7 @@ public class ResourceServiceImpl implements ResourceService {
         resourceDO.setImg(resultDTO.getImg());
         resourceDO.setTag(resultDTO.getTag());
         resourceDO.setTitle(resultDTO.getTitle());
-        resourceDO.setTimestamp(resultDTO.getTimestamp());
+        resourceDO.setPublishTime(resultDTO.getTimestamp());
         resourceDO.setShareUrl(resultDTO.getShareUrl());
         resourceDO.setParseStatus(ParseStatus.WAIT.getStatus());
         resourceDO.setStatus(BaseStatus.NORMAL.getStatus());

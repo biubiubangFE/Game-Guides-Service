@@ -1,6 +1,7 @@
 package com.mhdss.ggs.task;
 
 import com.mhdss.ggs.Spider.XiaoHeiHeSpider;
+import com.mhdss.ggs.constant.GameType;
 import com.mhdss.ggs.dto.SpiderResultDTO;
 import com.mhdss.ggs.service.ResourceService;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class ScannerResourceTask implements InitializingBean {
         //初始化启动任务，扫描接口，获取资源列表
         ScannerSource scannerSource = new ScannerSource();
 
-        scheduledExecutorService.scheduleWithFixedDelay(scannerSource, 1, 60, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(scannerSource, 1, 60, TimeUnit.MINUTES);
 
     }
 
@@ -43,18 +44,30 @@ public class ScannerResourceTask implements InitializingBean {
         @Override
         public void run() {
 
-            //1.得到扫描路径及
+            for (GameType gameType : GameType.values()) {
+                //小黑河类型扫描
+                scannerGameSource(gameType);
+            }
+
+        }
+
+        private void scannerGameSource(GameType gameType) {
+
             XiaoHeiHeSpider xiaoHeiHeSpider = new XiaoHeiHeSpider(restTemplate);
-            List<SpiderResultDTO> spiderResultDTOS = xiaoHeiHeSpider.getResult();
+            String xiaoHeiHeUrl = ScannerTarget.xiaoHeiHeSourceUrl() + " &tag=" + gameType.getCode();
+            List<SpiderResultDTO> spiderResultDTOS = xiaoHeiHeSpider.getResult(xiaoHeiHeUrl);
 
             //3.分类解析，入库
 
             for (SpiderResultDTO spiderResultDTO : spiderResultDTOS) {
                 logger.debug("插入 resource url =  {}", spiderResultDTO.getShareUrl());
-                resourceService.addResource(spiderResultDTO);
+                try {
+                    resourceService.addResource(spiderResultDTO);
+                } catch (Exception e) {
+                    logger.error("资源插入数据库失败,spiderResultDTO = {}", spiderResultDTO);
+                }
 
             }
-
         }
     }
 }

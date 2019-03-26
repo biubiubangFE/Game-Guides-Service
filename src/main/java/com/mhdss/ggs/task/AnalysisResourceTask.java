@@ -1,6 +1,7 @@
 package com.mhdss.ggs.task;
 
 import com.mhdss.ggs.Spider.XiaoHeiHeAnalysis;
+import com.mhdss.ggs.constant.GameType;
 import com.mhdss.ggs.constant.NewsShowType;
 import com.mhdss.ggs.constant.ParseStatus;
 import com.mhdss.ggs.dataobject.NewsDO;
@@ -43,7 +44,7 @@ public class AnalysisResourceTask implements InitializingBean {
         //初始化启动任务，扫描接口，获取资源列表
         AnalyseSource analyseSource = new AnalyseSource();
 
-        scheduledExecutorService.scheduleWithFixedDelay(analyseSource, 5, 60, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(analyseSource, 5, 60, TimeUnit.MINUTES);
 
     }
 
@@ -64,25 +65,32 @@ public class AnalysisResourceTask implements InitializingBean {
                 resourceService.updateParseStatus(resourceDO.getId(), ParseStatus.RUN);
 
                 String article = xiaoHeiHeAnalysis.startAnalysis(resourceDO);
-                if(StringUtils.isBlank(article)){
+                if (StringUtils.isBlank(article)) {
                     resourceService.updateParseStatus(resourceDO.getId(), ParseStatus.ERROR);
                 }
-                resourceService.updateParseStatus(resourceDO.getId(), ParseStatus.SUCCESS);
-                // 插入 news 表
                 NewsDO newsDO = new NewsDO();
-                newsDO.setResourceId(resourceDO.getId());
-                newsDO.setAuthor(resourceDO.getAuthor());
-                newsDO.setContent(article);
-                newsDO.setCopyFrom("XIAOHEIHE");
-                newsDO.setDescription(resourceDO.getDescription());
-                newsDO.setHitNum(0);
-                newsDO.setLikeNum(0);
-                newsDO.setPostNum(0);
-                newsDO.setTitle(resourceDO.getTitle());
-                newsDO.setTimestamp(resourceDO.getTimestamp());
-                newsDO.setThumpPath(resourceDO.getImg());
-                newsDO.setShowType(NewsShowType.CONTENT.getType());
-                newsService.addNews(newsDO);
+                // 插入 news 表
+                try {
+                    newsDO.setResourceId(resourceDO.getId());
+                    newsDO.setAuthor(resourceDO.getAuthor());
+                    newsDO.setContent(article);
+                    newsDO.setCopyFrom("XIAOHEIHE");
+                    newsDO.setDescription(resourceDO.getDescription());
+                    newsDO.setHitNum(0);
+                    newsDO.setLikeNum(0);
+                    newsDO.setPostNum(0);
+                    newsDO.setTitle(resourceDO.getTitle());
+                    newsDO.setPublishTime(resourceDO.getPublishTime());
+                    newsDO.setThumpPath(resourceDO.getImg());
+                    newsDO.setShowType(NewsShowType.CONTENT.getType());
+                    newsDO.setGameType(GameType.getCode(resourceDO.getTag()).getType());
+                    newsService.addNews(newsDO);
+                } catch (Exception e) {
+                    logger.error("news 插入数据库失败{},", newsDO);
+                    resourceService.updateParseStatus(resourceDO.getId(), ParseStatus.ERROR);
+                    continue;
+                }
+                resourceService.updateParseStatus(resourceDO.getId(), ParseStatus.SUCCESS);
             }
 
 

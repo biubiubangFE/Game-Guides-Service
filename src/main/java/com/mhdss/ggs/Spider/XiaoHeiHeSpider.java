@@ -6,7 +6,9 @@ import com.mhdss.ggs.dto.XiaoHeiHeResponseDTO;
 import com.mhdss.ggs.dto.XiaoHeiHeResultDTO;
 import com.mhdss.ggs.task.ScannerResourceTask;
 import com.mhdss.ggs.task.ScannerTarget;
+import com.mhdss.ggs.utils.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,9 +29,7 @@ public class XiaoHeiHeSpider {
 
     private static final Logger logger = LoggerFactory.getLogger(ScannerResourceTask.class);
 
-    public List<SpiderResultDTO> getResult() {
-
-        String xiaoHeiHeUrl = ScannerTarget.xiaoHeiHeSourceUrl();
+    public List<SpiderResultDTO> getResult(String xiaoHeiHeUrl) {
 
         ResponseEntity<XiaoHeiHeResponseDTO<List<XiaoHeiHeResultDTO>>> responseEntity = restTemplate.exchange(xiaoHeiHeUrl,
                 HttpMethod.GET, null, PERMISSIONS_TYPE_REFERENCE);
@@ -64,19 +64,33 @@ public class XiaoHeiHeSpider {
 
         for (XiaoHeiHeResultDTO dto : resultDTOS) {
             byte contentType = dto.getContent_type();
-            Long timestamp = dto.getTimestamp();
-            if (contentType == 2 && null != timestamp) {
+
+            if (contentType == 2) {
 
                 SpiderResultDTO spider = new SpiderResultDTO();
                 spider.setAuthor(dto.getAuthor());
-                spider.setDescription(dto.getDescription());
+
+                String description = dto.getDescription();
+                if (StringUtils.isNotBlank(description) && description.startsWith("小黑盒")) {
+                    spider.setDescription("最新游戏资讯");
+                } else {
+                    spider.setDescription(description);
+                }
+                Long pulishTime = dto.getTimestamp();
+                if (null == pulishTime) {
+                    spider.setTimestamp(DateUtil.getCurrentTimeStamp());
+
+                } else {
+                    spider.setTimestamp(dto.getTimestamp());
+                }
+
                 List<String> imgs = dto.getImgs();
                 if (CollectionUtils.isNotEmpty(imgs)) {
                     spider.setImg(imgs.get(0));
                 }
                 spider.setShareUrl(dto.getShare_url());
                 spider.setTag(dto.getTag());
-                spider.setTimestamp(dto.getTimestamp());
+
                 spider.setTitle(dto.getTitle());
                 spider.setSpiderType(SpiderAddressType.XIAOHEIHEZIZOUQI);
 

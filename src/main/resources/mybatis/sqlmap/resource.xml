@@ -2,186 +2,167 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mhdss.ggs.dao.ResourceDAO">
 
-    <sql id="insert_columns">
-    (title, share_url, description, tag, timestamp, img, author, parse_status, from_type, status, create_time, update_time)
+  <sql id="insert_columns">
+    (title, share_url, description, tag, publish_time, img, author, parse_status, from_type, status, create_time, update_time)
   </sql>
 
-    <sql id="insert_values">
-    (#{title}, #{shareUrl}, #{description}, #{tag}, #{timestamp}, #{img}, #{author}, #{parseStatus}, #{fromType}, #{status}, #{createTime}, #{updateTime})
+  <sql id="insert_values">
+    (#{title}, #{shareUrl}, #{description}, #{tag}, #{publishTime}, #{img}, #{author}, #{parseStatus}, #{fromType}, #{status}, #{createTime}, #{updateTime})
   </sql>
 
-    <sql id="query_columns">
-    id, title, share_url AS shareUrl, description, tag, timestamp, img, author, parse_status AS parseStatus, from_type AS fromType, status, create_time AS createTime, update_time AS updateTime
+  <sql id="query_columns">
+    id, title, share_url AS shareUrl, description, tag, publish_time AS publishTime, img, author, parse_status AS parseStatus, from_type AS fromType, status, create_time AS createTime, update_time AS updateTime
   </sql>
 
-    <sql id="where">
-        <where>
-
-            <if test="parseStatus != null">
+  <sql id="where">
+    <where>
+      <if test="parseStatus != null">
                 AND parse_status = #{parseStatus}
             </if>
+    </where>
+  </sql>
 
-        </where>
-    </sql>
+  <sql id="limit_where">
+    <include refid="where"/>
+    <if test="range != 0">
+      LIMIT ${start}, ${range}
+    </if>
+  </sql>
 
-    <sql id="limit_where">
-        <include refid="where"/>
-        <if test="range != 0">
-            LIMIT ${start}, ${range}
-        </if>
-    </sql>
+  <insert id="insert" parameterType="com.mhdss.ggs.dataobject.ResourceDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO resource <include refid="insert_columns"/> VALUES <include refid="insert_values"/>
+  </insert>
 
-    <insert id="insert" parameterType="com.mhdss.ggs.dataobject.ResourceDO">
-        <selectKey keyProperty="id" resultType="long">
-            SELECT LAST_INSERT_ID() AS id
-        </selectKey>
-        INSERT INTO resource
-        <include refid="insert_columns"/>
-        VALUES
-        <include refid="insert_values"/>
-    </insert>
+  <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.ggs.dataobject.ResourceDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO resource <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+  </update>
 
-    <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.ggs.dataobject.ResourceDO">
-        <selectKey keyProperty="id" resultType="long">
-            SELECT LAST_INSERT_ID() AS id
-        </selectKey>
-        INSERT INTO resource
-        <include refid="insert_columns"/>
-        VALUES
-        <include refid="insert_values"/>
-        ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
-    </update>
+  <update id="updateById" parameterType="com.mhdss.ggs.dataobject.ResourceDO">
+    UPDATE resource
+    <set>
+      <if test="title != null">
+        title = #{title},
+      </if>
+      <if test="shareUrl != null">
+        share_url = #{shareUrl},
+      </if>
+      <if test="description != null">
+        description = #{description},
+      </if>
+      <if test="tag != null">
+        tag = #{tag},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime},
+      </if>
+      <if test="img != null">
+        img = #{img},
+      </if>
+      <if test="author != null">
+        author = #{author},
+      </if>
+      <if test="parseStatus != null">
+        parse_status = #{parseStatus},
+      </if>
+      <if test="fromType != null">
+        from_type = #{fromType},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
 
-    <update id="updateById" parameterType="com.mhdss.ggs.dataobject.ResourceDO">
-        UPDATE resource
-        <set>
-            <if test="title != null">
-                title = #{title},
-            </if>
-            <if test="shareUrl != null">
-                share_url = #{shareUrl},
-            </if>
-            <if test="description != null">
-                description = #{description},
-            </if>
-            <if test="tag != null">
-                tag = #{tag},
-            </if>
-            <if test="timestamp != null">
-                timestamp = #{timestamp},
-            </if>
-            <if test="img != null">
-                img = #{img},
-            </if>
-            <if test="author != null">
-                author = #{author},
-            </if>
-            <if test="parseStatus != null">
-                parse_status = #{parseStatus},
-            </if>
-            <if test="fromType != null">
-                from_type = #{fromType},
-            </if>
-            <if test="status != null">
-                status = #{status},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime},
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
+  <update id="updateByIds" parameterType="java.util.Map">
+    UPDATE resource
+    <set>
+      <if test="target.title != null">
+        title = #{target.title},
+      </if>
+      <if test="target.shareUrl != null">
+        share_url = #{target.shareUrl},
+      </if>
+      <if test="target.description != null">
+        description = #{target.description},
+      </if>
+      <if test="target.tag != null">
+        tag = #{target.tag},
+      </if>
+      <if test="target.publishTime != null">
+        publish_time = #{target.publishTime},
+      </if>
+      <if test="target.img != null">
+        img = #{target.img},
+      </if>
+      <if test="target.author != null">
+        author = #{target.author},
+      </if>
+      <if test="target.parseStatus != null">
+        parse_status = #{target.parseStatus},
+      </if>
+      <if test="target.fromType != null">
+        from_type = #{target.fromType},
+      </if>
+      <if test="target.status != null">
+        status = #{target.status},
+      </if>
+      <if test="target.createTime != null">
+        create_time = #{target.createTime},
+      </if>
+      <if test="target.updateTime != null">
+        update_time = #{target.updateTime},
+      </if>
+    </set>
+    WHERE id IN
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
 
-    <update id="updateByIds" parameterType="java.util.Map">
-        UPDATE resource
-        <set>
-            <if test="target.title != null">
-                title = #{target.title},
-            </if>
-            <if test="target.shareUrl != null">
-                share_url = #{target.shareUrl},
-            </if>
-            <if test="target.description != null">
-                description = #{target.description},
-            </if>
-            <if test="target.tag != null">
-                tag = #{target.tag},
-            </if>
-            <if test="target.timestamp != null">
-                timestamp = #{target.timestamp},
-            </if>
-            <if test="target.img != null">
-                img = #{target.img},
-            </if>
-            <if test="target.author != null">
-                author = #{target.author},
-            </if>
-            <if test="target.parseStatus != null">
-                parse_status = #{target.parseStatus},
-            </if>
-            <if test="target.fromType != null">
-                from_type = #{target.fromType},
-            </if>
-            <if test="target.status != null">
-                status = #{target.status},
-            </if>
-            <if test="target.createTime != null">
-                create_time = #{target.createTime},
-            </if>
-            <if test="target.updateTime != null">
-                update_time = #{target.updateTime},
-            </if>
-        </set>
-        WHERE id IN
-        <foreach close=")" collection="ids" item="id" open="(" separator=",">
-            #{id}
-        </foreach>
-    </update>
-
-    <delete id="deleteById" parameterType="long">
+  <delete id="deleteById" parameterType="long">
     DELETE FROM resource WHERE id = #{id}
   </delete>
 
-    <delete id="deleteByIds" parameterType="java.util.Collection">
-        DELETE FROM resource WHERE id IN
-        <foreach close=")" collection="collection" item="id" open="(" separator=",">
-            #{id}
-        </foreach>
-    </delete>
+  <delete id="deleteByIds" parameterType="java.util.Collection">
+    DELETE FROM resource WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
 
-    <select id="selectById" parameterType="long" resultType="com.mhdss.ggs.dataobject.ResourceDO">
-        SELECT
-        <include refid="query_columns"/>
-        FROM resource WHERE id = #{id}
-    </select>
+  <select id="selectById" parameterType="long" resultType="com.mhdss.ggs.dataobject.ResourceDO">
+    SELECT <include refid="query_columns"/> FROM resource WHERE id = #{id}
+  </select>
 
-    <select id="selectIdsByQuery" parameterType="com.mhdss.ggs.query.ResourceQuery" resultType="long">
-        SELECT id FROM resource
-        <include refid="limit_where"/>
-    </select>
+  <select id="selectIdsByQuery" parameterType="com.mhdss.ggs.query.ResourceQuery" resultType="long">
+    SELECT id FROM resource <include refid="limit_where"/>
+  </select>
 
-    <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.ggs.dataobject.ResourceDO">
-        SELECT
-        <include refid="query_columns"/>
-        FROM resource WHERE id IN
-        <foreach close=")" collection="collection" item="id" open="(" separator=",">
-            #{id}
-        </foreach>
-    </select>
+  <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.ggs.dataobject.ResourceDO">
+    SELECT <include refid="query_columns"/> FROM resource WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
 
-    <select id="selectCount" parameterType="com.mhdss.ggs.query.ResourceQuery" resultType="int">
-        SELECT COUNT(*) FROM resource
-        <include refid="where"/>
-    </select>
+  <select id="selectCount" parameterType="com.mhdss.ggs.query.ResourceQuery" resultType="int">
+    SELECT COUNT(*) FROM resource <include refid="where"/>
+  </select>
 
-    <select id="selectList" parameterType="com.mhdss.ggs.query.ResourceQuery"
-            resultType="com.mhdss.ggs.dataobject.ResourceDO">
-        SELECT
-        <include refid="query_columns"/>
-        FROM resource
-        <include refid="limit_where"/>
-    </select>
+  <select id="selectList" parameterType="com.mhdss.ggs.query.ResourceQuery" resultType="com.mhdss.ggs.dataobject.ResourceDO">
+    SELECT <include refid="query_columns"/> FROM resource <include refid="limit_where"/>
+  </select>
 </mapper>

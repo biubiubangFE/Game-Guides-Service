@@ -9,7 +9,7 @@ public class ResourceDO extends BaseDO {
 
     private String tag;
 
-    private Long timestamp;
+    private Long publishTime;
 
     private String img;
 
@@ -51,12 +51,12 @@ public class ResourceDO extends BaseDO {
         this.tag = tag;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public Long getPublishTime() {
+        return publishTime;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setPublishTime(Long publishTime) {
+        this.publishTime = publishTime;
     }
 
     public String getImg() {

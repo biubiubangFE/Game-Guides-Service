@@ -23,9 +23,11 @@ public class NewsDO extends BaseDO {
 
     private String htmlPath;
 
+    private Byte gameType;
+
     private String thumpPath;
 
-    private Long timestamp;
+    private Long publishTime;
 
     public Long getResourceId() {
         return resourceId;
@@ -115,6 +117,14 @@ public class NewsDO extends BaseDO {
         this.htmlPath = htmlPath;
     }
 
+    public Byte getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(Byte gameType) {
+        this.gameType = gameType;
+    }
+
     public String getThumpPath() {
         return thumpPath;
     }
@@ -123,11 +133,11 @@ public class NewsDO extends BaseDO {
         this.thumpPath = thumpPath;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public Long getPublishTime() {
+        return publishTime;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setPublishTime(Long publishTime) {
+        this.publishTime = publishTime;
     }
 }
