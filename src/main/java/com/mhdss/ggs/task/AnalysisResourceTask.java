@@ -44,7 +44,7 @@ public class AnalysisResourceTask implements InitializingBean {
         //初始化启动任务，扫描接口，获取资源列表
         AnalyseSource analyseSource = new AnalyseSource();
 
-        scheduledExecutorService.scheduleWithFixedDelay(analyseSource, 5, 60, TimeUnit.MINUTES);
+        scheduledExecutorService.scheduleWithFixedDelay(analyseSource, 5, 240, TimeUnit.MINUTES);
 
     }
 

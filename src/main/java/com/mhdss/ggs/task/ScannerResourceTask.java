@@ -35,7 +35,7 @@ public class ScannerResourceTask implements InitializingBean {
         //初始化启动任务，扫描接口，获取资源列表
         ScannerSource scannerSource = new ScannerSource();
 
-        scheduledExecutorService.scheduleWithFixedDelay(scannerSource, 1, 60, TimeUnit.MINUTES);
+        scheduledExecutorService.scheduleWithFixedDelay(scannerSource, 1, 240, TimeUnit.MINUTES);
 
     }
 

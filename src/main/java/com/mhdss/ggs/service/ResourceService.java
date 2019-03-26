@@ -13,4 +13,5 @@ public interface ResourceService {
     List<ResourceDO> selectResource(ParseStatus parseStatus);
 
     void updateParseStatus(Long resourceId, ParseStatus parseStatus);
+
 }

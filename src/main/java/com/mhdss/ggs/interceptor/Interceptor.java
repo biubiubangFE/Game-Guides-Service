@@ -1,7 +1,9 @@
 package com.mhdss.ggs.interceptor;
 
+import com.mhdss.ggs.dataobject.WxUserDO;
 import com.mhdss.ggs.dto.AuthAgent;
 import com.mhdss.ggs.exception.NotLoginException;
+import com.mhdss.ggs.service.WxUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -26,6 +28,9 @@ public class Interceptor implements InitializingBean, HandlerInterceptor {
 
     private String[] includes;
 
+    @Autowired
+    private WxUserService wxUserService;
+
     @Override
     public void afterPropertiesSet() {
 
@@ -36,8 +41,16 @@ public class Interceptor implements InitializingBean, HandlerInterceptor {
         logger.debug("preHandle==================== {}");
 
 
-
-        throw new NotLoginException("", "");
+        String ip = getLocalIp(request);
+        authAgent.setIp(ip);
+        String sessionKey = request.getHeader(SESSION_KEY_NAME);
+        WxUserDO wxUserDO = wxUserService.queryUserBySession(sessionKey);
+        if (null != wxUserDO) {
+            authAgent.setWxUserId(wxUserDO.getId());
+        } else {
+            throw new NotLoginException("", "");
+        }
+        return true;
     }
 
     @Override

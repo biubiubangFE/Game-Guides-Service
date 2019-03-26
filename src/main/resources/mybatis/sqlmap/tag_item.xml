@@ -16,7 +16,13 @@
 
   <sql id="where">
     <where>
-      
+      <if test="itemName != null">
+        AND item_name = #{itemName}
+      </if>
+
+      <if test="searchTag != null">
+        AND item_name like CONCAT(#{searchTag},'%')
+      </if>
     </where>
   </sql>
 

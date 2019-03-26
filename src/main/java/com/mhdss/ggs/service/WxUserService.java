@@ -11,4 +11,6 @@ public interface WxUserService {
     UserInfo getUserInfo(String sessionKey, String encryptedData, String iv) throws Exception;
 
     void login(WxUserDO wxUserDO);
+
+    WxUserDO queryUserBySession(String sessionKey);
 }

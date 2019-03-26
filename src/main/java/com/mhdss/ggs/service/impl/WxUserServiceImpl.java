@@ -11,6 +11,7 @@ import com.mhdss.ggs.dao.WxUserDAO;
 import com.mhdss.ggs.dataobject.WxUserDO;
 import com.mhdss.ggs.dto.WxCheckDTO;
 import com.mhdss.ggs.para.UserInfo;
+import com.mhdss.ggs.query.WxUserQuery;
 import com.mhdss.ggs.service.WxUserService;
 import com.mhdss.ggs.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -145,6 +146,15 @@ public class WxUserServiceImpl implements WxUserService {
         wxUserDO.setCreateTime(nowTime);
         wxUserDO.setUpdateTime(nowTime);
         wxUserDAO.insertUpdateOnDuplicate(wxUserDO);
+    }
+
+    @Override
+    public WxUserDO queryUserBySession(String sessionKey) {
+
+        WxUserQuery query = new WxUserQuery();
+        query.setSessionKey(sessionKey);
+
+        return wxUserDAO.selectByQuery(query);
     }
 
 }
