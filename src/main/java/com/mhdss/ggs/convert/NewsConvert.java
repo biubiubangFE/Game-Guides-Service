@@ -25,6 +25,8 @@ public class NewsConvert {
         newsVO.setPublishTime(DO.getPublishTime());
         newsVO.setThumpPath(DO.getThumpPath());
         newsVO.setShowType(DO.getShowType());
+        newsVO.setTitle(DO.getTitle());
+        newsVO.setPostNum(DO.getPostNum());
         return newsVO;
     }
 

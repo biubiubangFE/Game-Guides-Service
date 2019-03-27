@@ -28,17 +28,6 @@
                 </foreach>
             </if>
 
-            <if test="sortType != null and sortType ==1">
-                ORDER By publish_time DESC
-            </if>
-
-            <if test="sortType != null and sortType ==2">
-                ORDER By hit_num DESC
-            </if>
-
-            <if test="sortType != null and sortType ==3">
-                ORDER By like_num DESC
-            </if>
 
         </where>
     </sql>
@@ -230,6 +219,23 @@
         SELECT
         <include refid="query_columns"/>
         FROM news
-        <include refid="limit_where"/>
+        <include refid="where"/>
+
+        <if test="sortType != null and sortType ==1">
+            ORDER By publish_time DESC
+        </if>
+
+        <if test="sortType != null and sortType ==2">
+            ORDER By hit_num DESC
+        </if>
+
+        <if test="sortType != null and sortType ==3">
+            ORDER By like_num DESC
+        </if>
+
+        <if test="range != 0">
+            LIMIT ${start}, ${range}
+        </if>
+
     </select>
 </mapper>

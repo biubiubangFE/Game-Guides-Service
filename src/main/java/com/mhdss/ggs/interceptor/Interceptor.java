@@ -40,7 +40,6 @@ public class Interceptor implements InitializingBean, HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.debug("preHandle==================== {}");
 
-
         String ip = getLocalIp(request);
         authAgent.setIp(ip);
         String sessionKey = request.getHeader(SESSION_KEY_NAME);
