@@ -10,9 +10,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/data/log/template_client/debug.log</file>
+        <file>/data/log/game-guides/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/log/template_client/%d{yyyy-MM-dd}_debug.log</fileNamePattern>
+            <fileNamePattern>/data/log/game-guides/%d{yyyy-MM-dd}_debug.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -21,9 +21,9 @@
     </appender>
 
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/data/log/template_client/error.log</file>
+        <file>/data/log/game-guides/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/log/template_client/%d{yyyy-MM-dd}_error.log</fileNamePattern>
+            <fileNamePattern>/data/log/game-guides/%d{yyyy-MM-dd}_error.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger:%line - %msg%n</pattern>

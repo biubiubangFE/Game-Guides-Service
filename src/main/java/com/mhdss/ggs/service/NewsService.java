@@ -10,5 +10,5 @@ public interface NewsService {
 
     NewsVO queryById(Long newsId);
 
-    PageResVO<NewsVO> paginationNews(Byte gameType,String searchTag,Byte sortType,int pageNo, int pageSize);
+    PageResVO<NewsVO> paginationNews(Byte gameType, String searchTag, String keyword, Byte sortType, int pageNo, int pageSize);
 }

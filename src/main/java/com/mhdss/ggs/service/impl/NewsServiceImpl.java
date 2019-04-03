@@ -44,7 +44,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public PageResVO<NewsVO> paginationNews(Byte gameType, String searchTag, Byte sortType, int pageNo, int pageSize) {
+    public PageResVO<NewsVO> paginationNews(Byte gameType, String searchTag, String keyword, Byte sortType, int pageNo, int pageSize) {
         // 排序 sortType 1,时间倒叙，2,阅读量，3,点赞量
         // gameType 1.自走棋2.吃鸡3.主机游戏
         PagedList<NewsDO> pagedList = null;
@@ -60,6 +60,7 @@ public class NewsServiceImpl implements NewsService {
                     query.setNewsIds(newsIds);
                     query.setGameType(gameType);
                     query.setSortType(sortType);
+                    query.setKeyword(keyword);
                     query.setPagination(pageNo, pageSize);
                     pagedList = newsDAO.selectPage(query);
 

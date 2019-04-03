@@ -28,6 +28,10 @@
                 </foreach>
             </if>
 
+            <if test="keyword != null">
+                AND title like CONCAT(#{keyword},'%')
+                OR author like CONCAT(#{keyword},'%')
+            </if>
 
         </where>
     </sql>

@@ -7,6 +7,7 @@ public class NewsQuery extends AbstractQuery {
     private List<Long> newsIds;
     private Byte gameType;
     private Byte sortType;
+    private String keyword;
 
     public List<Long> getNewsIds() {
         return newsIds;
@@ -30,5 +31,13 @@ public class NewsQuery extends AbstractQuery {
 
     public void setSortType(Byte sortType) {
         this.sortType = sortType;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

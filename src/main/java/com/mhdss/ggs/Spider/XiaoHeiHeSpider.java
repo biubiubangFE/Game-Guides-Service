@@ -5,7 +5,6 @@ import com.mhdss.ggs.dto.SpiderResultDTO;
 import com.mhdss.ggs.dto.XiaoHeiHeResponseDTO;
 import com.mhdss.ggs.dto.XiaoHeiHeResultDTO;
 import com.mhdss.ggs.task.ScannerResourceTask;
-import com.mhdss.ggs.task.ScannerTarget;
 import com.mhdss.ggs.utils.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +29,7 @@ public class XiaoHeiHeSpider {
     private static final Logger logger = LoggerFactory.getLogger(ScannerResourceTask.class);
 
     public List<SpiderResultDTO> getResult(String xiaoHeiHeUrl) {
+
 
         ResponseEntity<XiaoHeiHeResponseDTO<List<XiaoHeiHeResultDTO>>> responseEntity = restTemplate.exchange(xiaoHeiHeUrl,
                 HttpMethod.GET, null, PERMISSIONS_TYPE_REFERENCE);

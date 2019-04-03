@@ -15,14 +15,15 @@ public class NewsController {
     private NewsService newsService;
 
     @RequestMapping(value = "/page/list", method = RequestMethod.POST)
-    public ResponseData<?> pageList(@RequestParam(value = "gameType",required = false) Byte gameType,
-                                    @RequestParam(value = "searchTag",required = false) String searchTag,
+    public ResponseData<?> pageList(@RequestParam(value = "gameType", required = false) Byte gameType,
+                                    @RequestParam(value = "searchTag", required = false) String searchTag,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
                                     @RequestParam(value = "sortType", defaultValue = "1") Byte sortType,
                                     @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                     @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo) {
 
 
-        PageResVO<NewsVO> pageResVO = newsService.paginationNews(gameType, searchTag, sortType, pageNo, pageSize);
+        PageResVO<NewsVO> pageResVO = newsService.paginationNews(gameType, searchTag, keyword, sortType, pageNo, pageSize);
 
         return ResponseData.success(pageResVO);
     }
